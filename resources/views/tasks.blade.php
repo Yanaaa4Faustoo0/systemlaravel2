@@ -36,6 +36,19 @@
 
         .hero { margin-bottom: 28px; }
 
+        .nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 46px;
+        }
+
+        .nav-links { display: flex; gap: 8px; font-size: .9rem; font-weight: 700; }
+        .nav-links a { border-radius: 12px; background: #e4e1e9; color: #756d80; padding: 9px 13px; text-decoration: none; transition: background .2s, color .2s, box-shadow .2s; }
+        .nav-links a:hover { background: #f5f3f8; color: var(--violet-700); }
+        .nav-links a.active { background: #fff; color: var(--violet-700); box-shadow: 0 4px 12px rgba(84,55,139,.14); }
+
         .eyebrow {
             margin: 0 0 10px;
             color: var(--violet-700);
@@ -145,11 +158,19 @@
             .page { padding: 34px 0; }
             .layout { grid-template-columns: 1fr; }
             .card { padding: 21px; }
+            .nav { align-items: flex-start; flex-direction: column; }
         }
     </style>
 </head>
 <body>
 <main class="page">
+    <nav class="nav">
+        <div class="nav-links">
+            <a class="{{ request()->routeIs('members.*') ? 'active' : '' }}" href="{{ route('members.index') }}">Members</a>
+            <a class="{{ request()->routeIs('tasks.*') ? 'active' : '' }}" href="{{ route('tasks.index') }}">Tasks</a>
+        </div>
+    </nav>
+
     <header class="hero">
         <p class="eyebrow">Personal workspace</p>
         <h1>My Tasks</h1>
