@@ -16,6 +16,8 @@
             <div class="profile-item full"><span>Address</span><strong>{{ $member->address ?: 'Not provided' }}</strong></div>
         </div>
         <div class="form-actions">
+            <a class="button secondary" href="{{ route('members.transactions', $member) }}">Transaction history</a>
+            <a class="button" href="{{ route('transactions.create', ['member_id' => $member->id]) }}">New transaction</a>
             <form method="POST" action="{{ route('members.delete', $member) }}" onsubmit="return confirm('Permanently delete this member? This cannot be undone.')">
                 @csrf
                 @method('DELETE')

@@ -63,6 +63,13 @@
         .profile { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
         .profile-item { border-bottom:1px solid #eee8f8; padding-bottom:12px; }
         .profile-item span { display:block; color:var(--muted); font-size:.78rem; margin-bottom:5px; }
+        .portal-switch { display:flex; justify-content:center; gap:8px; margin-bottom:30px; }
+        .portal-switch a { border-radius:12px; background:var(--violet-100); color:var(--violet-700); padding:10px 15px; font-size:.88rem; font-weight:800; }
+        .portal-switch a.active { background:linear-gradient(135deg,var(--violet-500),var(--violet-700)); color:#fff; box-shadow:0 5px 14px rgba(109,40,217,.2); }
+        .action-card { margin-top:24px; background:var(--violet-50); box-shadow:none; }
+        .badge.status-paid { background:#e5f8ee; color:#21734a; }
+        .badge.status-approved { background:#dff4ff; color:#176583; }
+        .badge.status-cancelled,.badge.status-expired { background:#fff0f4; color:#ad315c; }
         @media (max-width:900px) { .levels-grid { grid-template-columns:repeat(2,1fr); } }
         @media (max-width:700px) { .nav,.hero { align-items:flex-start; flex-direction:column; } .grid,.levels-grid,.form-grid,.profile { grid-template-columns:1fr; } .full { grid-column:auto; } .card { padding:18px; overflow-x:auto; } table { min-width:650px; } }
     </style>
@@ -70,9 +77,10 @@
 <body>
 <main class="page">
     <nav class="nav">
-        <div class="nav-links"><a class="{{ request()->routeIs('members.*') ? 'active' : '' }}" href="{{ route('members.index') }}">Members</a><a class="{{ request()->routeIs('tasks.*') ? 'active' : '' }}" href="{{ route('tasks.index') }}">Tasks</a></div>
+        <div class="nav-links"><a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">Dashboard</a><a class="{{ request()->routeIs('members.*') ? 'active' : '' }}" href="{{ route('members.index') }}">Members</a><a class="{{ request()->routeIs('transactions.*') ? 'active' : '' }}" href="{{ route('transactions.index') }}">Transactions</a><a class="{{ request()->routeIs('categories.*') ? 'active' : '' }}" href="{{ route('categories.index') }}">Categories</a><a class="{{ request()->routeIs('levels.*') ? 'active' : '' }}" href="{{ route('levels.index') }}">Levels</a><form method="POST" action="{{ route('logout') }}" style="display:inline">@csrf<button class="button secondary" style="padding:9px 13px;font-size:.9rem">Log out</button></form></div>
     </nav>
     @if (session('success')) <p class="notice">{{ session('success') }}</p> @endif
+    @if (session('error')) <p class="error">{{ session('error') }}</p> @endif
     @if ($errors->any())
         <div class="error"><strong>Please check the form:</strong><ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
     @endif

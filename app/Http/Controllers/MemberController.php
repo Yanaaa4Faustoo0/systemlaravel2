@@ -49,6 +49,7 @@ class MemberController extends Controller
     public function store(Request $request)
     {
         $validated = $this->validateMember($request);
+        $validated['member_number'] = $validated['member_number'] ?? $this->memberNumber();
         Member::create($validated);
 
         return redirect()->route('members.index')->with('success', 'Member registered successfully.');
@@ -92,14 +93,14 @@ class MemberController extends Controller
     private function validateMember(Request $request, ?Member $member = null): array
     {
         return $request->validate([
-            'member_number' => ['required', 'string', 'max:50', Rule::unique('members', 'member_number')->ignore($member)],
+            'member_number' => ['nullable', 'string', 'max:50', Rule::unique('members', 'member_number')->ignore($member)],
             'first_name' => ['required', 'string', 'max:100'],
             'last_name' => ['required', 'string', 'max:100'],
             'email' => ['nullable', 'email', 'max:255', Rule::unique('members', 'email')->ignore($member)],
             'phone' => ['nullable', 'string', 'max:30'],
             'address' => ['nullable', 'string'],
-            'category' => ['required', 'string', 'max:100'],
-            'level' => ['required', 'string', 'max:100'],
+            'category' => ['required', 'string', Rule::exists('membership_categories', 'name')],
+            'level' => ['required', 'string', Rule::exists('membership_levels', 'name')],
             'joined_at' => ['required', 'date'],
             'status' => ['sometimes', Rule::in(['active', 'inactive'])],
         ]);
@@ -111,5 +112,14 @@ class MemberController extends Controller
             'categories' => MembershipCategory::orderBy('name')->get(),
             'levels' => MembershipLevel::orderBy('id')->get(),
         ];
+    }
+
+    private function memberNumber(): string
+    {
+        do {
+            $number = 'MEM-' . now()->format('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(4)), 0, 6));
+        } while (Member::where('member_number', $number)->exists());
+
+        return $number;
     }
 }

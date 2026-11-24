@@ -1,7 +1,7 @@
 <div class="form-grid">
     <div>
         <label for="member_number">Member number</label>
-        <input id="member_number" name="member_number" value="{{ old('member_number', $member->member_number ?? '') }}" required>
+        <input id="member_number" name="member_number" value="{{ old('member_number', $member->member_number ?? '') }}" placeholder="Leave blank to generate automatically" {{ isset($member) ? 'required' : '' }}>
     </div>
     <div>
         <label for="joined_at">Date joined</label>
