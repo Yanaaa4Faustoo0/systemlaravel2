@@ -1,0 +1,7 @@
+RewriteEngine On
+
+# Keep public storage paths available if the app uses uploaded files.
+RewriteRule ^storage/(.*)$ /storage/app/public/$1 [END]
+
+# InfinityFree serves htdocs as the web root; Laravel serves through public/.
+RewriteRule (.*) /public/$1 [L]
